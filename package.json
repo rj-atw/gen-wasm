@@ -1,0 +1,14 @@
+{
+  "private": true,
+  "name": "gen-wasm",
+  "main": "gen-wasm.js",
+  "version": "0.0.1",
+  "description": "call docker to create an WebAssembly module based on incoming code snippet",
+  "scripts": {
+    "test": "mocha"
+  },
+  "dependencies": {
+    "dockerode": "^3.1.0"
+  },
+  "devDependencies": {}
+}
