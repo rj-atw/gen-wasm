@@ -9,6 +9,18 @@ const server = restify.createServer()
 server.use(restify.plugins.bodyParser(
 ))
 
+const corsMiddleware = require('restify-cors-middleware')
+ 
+const cors = corsMiddleware({
+	  preflightMaxAge: 5, //Optional
+	  origins: ['http://localhost:8080'],
+	  allowHeaders: ['API-Token'],
+	  exposeHeaders: ['API-Token-Expiry']
+})
+ 
+server.pre(cors.preflight)
+server.use(cors.actual)
+
 server.listen(8011, function() {
   console.log('%s listening at %s', server.name, server.url);
 })
