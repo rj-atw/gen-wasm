@@ -30,3 +30,10 @@ server.post('/compile', function(req, res, next) {
   genWasm.compileToWasm(req.body.program, req.body.content)
   res.send('bar')
 })
+
+server.get('/list', function(req, res, next) {
+  genWasm.programList().then(listOfPromises => {
+    Promise.all(listOfPromises).
+            then(list => res.send(list))
+  })
+})
