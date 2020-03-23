@@ -13,7 +13,7 @@ const corsMiddleware = require('restify-cors-middleware')
  
 const cors = corsMiddleware({
 	  preflightMaxAge: 5, //Optional
-	  origins: ['http://localhost:8080'],
+	  origins: ['http://localhost:8080', 'http://34.102.155.9'],
 	  allowHeaders: ['API-Token'],
 	  exposeHeaders: ['API-Token-Expiry']
 })
@@ -36,4 +36,8 @@ server.get('/list', function(req, res, next) {
     Promise.all(listOfPromises).
             then(list => res.send(list))
   })
+})
+
+server.get('/getWasm/:progName', function(req, res, next) {
+  genWasm.get(req.params.progName).then(content => res.sendRaw(content))
 })

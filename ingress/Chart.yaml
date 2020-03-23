@@ -1,0 +1,4 @@
+apiVersion: v1
+name: wasm-ingress
+description: backend to compile and list WASM snippets
+version: 0.0.1

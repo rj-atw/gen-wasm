@@ -1,3 +1,6 @@
+const util = require('util')
+const exec = util.promisify(require('child_process').exec)
+
 const Docker = require('dockerode')
 const fs = require('fs')
 
@@ -45,28 +48,19 @@ function programList() {
 
 //TODO: make async
 function compileToWasm(programName, text) {
+    fs.promises.writeFile('/srv/node-app/src/lib.rs', text).
+    then( () =>  exec('wasm-pack build --target web && cp /srv/node-app/pkg/hello_world_bg.wasm /tmp/'+programName+'.wasm')).
+    then(data => { 
+      const fileName = '/tmp/'+programName+'.wasm' 
+      console.log(fileName)
+      return storage.bucket(bucketName).upload(fileName)
+    }) 
+}
 
-fs.promises.mkdir('tmp').
-  then( () => fs.promises.writeFile('tmp/lib.rs', text)).
-  then( () =>  
-//docker.run('make-rust', ['bash', '-c', 'uname -a'], process.stdout).then(function(data) {
-docker.run('make-rust', [], process.stdout, { ENV: ["prog="+programName,"file=tmp/lib.rs"], HostConfig: { Binds: [
-		"C:\\Users\\start\\code\\genWasm:/mnt/input:rw", 
-		"C:\\Users\\start\\foo\\www:/mnt/www:rw"
-]}})
-)
-.then(function(data) {
-	  var output = data[0];
-	  var container = data[1];
-	  return container.remove();
-}).then(data => {
-  const fileName = '/home/rj/foo/www/'+programName+'.wasm' 
-  return storage.bucket(bucketName).upload(fileName)
-}	
-).then(data => console.log('container removed')).
-  catch( err => console.log(err))
-  .finally( () => fs.promises.rmdir('tmp', {recursive: true}))
+function get(programName) {
+  return storage.bucket(bucketName).file(programName).download().then(respArray => respArray[0])
 }
 
 exports.compileToWasm = compileToWasm
 exports.programList = programList
+exports.get = get

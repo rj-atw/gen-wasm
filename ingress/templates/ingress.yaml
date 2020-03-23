@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: {{.Chart.Name}}
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /list
+        backend:
+          serviceName: gen-wasm-service
+          servicePort: 8011
+      - path: /compile
+        backend:
+          serviceName: gen-wasm-service
+          servicePort: 8011
+      - path: /getWasm/*
+        backend:
+          serviceName: gen-wasm-service
+          servicePort: 8011
+      - path: /*
+        backend:
+          serviceName: site-service
+          servicePort: 80
