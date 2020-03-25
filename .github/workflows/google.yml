@@ -72,4 +72,4 @@ jobs:
     - name: Deploy
       run: |
         gcloud container clusters get-credentials $GKE_CLUSTER --zone $GKE_ZONE --project $GKE_PROJECT
-        helm upgrade --install backend/$CHART_NAME chart
+        helm upgrade --install $CHART_NAME backend/chart
