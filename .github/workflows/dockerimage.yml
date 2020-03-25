@@ -17,4 +17,4 @@ jobs:
     - name: Build the Docker image
       env: 
          GCP_TOKEN: ${{secrets.GCP_TOKEN}}
-      run: echo $GCP_TOKEN > key.json && docker build . --file Dockerfile --tag gen-wasm:$(date +%s)
+      run: cd backend && echo $GCP_TOKEN > key.json && docker build . --file Dockerfile --tag gen-wasm:$(date +%s)

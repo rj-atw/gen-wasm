@@ -51,6 +51,7 @@ jobs:
     # Build the Docker image
     - name: Build
       run: |        
+        cd backend && \
         echo $GCP_TOKEN > key.json && docker build -t "$REGISTRY_HOSTNAME"/"$GKE_PROJECT"/"$IMAGE":"$GITHUB_SHA" \
           --build-arg GITHUB_SHA="$GITHUB_SHA" \
           --build-arg GITHUB_REF="$GITHUB_REF" .
@@ -71,4 +72,4 @@ jobs:
     - name: Deploy
       run: |
         gcloud container clusters get-credentials $GKE_CLUSTER --zone $GKE_ZONE --project $GKE_PROJECT
-        helm upgrade --install $CHART_NAME chart
+        helm upgrade --install backend/$CHART_NAME chart
