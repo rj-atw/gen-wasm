@@ -22,15 +22,14 @@ spec:
              - containerPort: 8011
            readinessProbe:
              httpGet:
-               path: /list
+               path: /ping
                port: 8011
-             timeoutSeconds: 15
-             timeoutSeconds: 15
-             periodSeconds: 60
+             timeoutSeconds: 3 
+             periodSeconds: 10
            livenessProbe:
              httpGet:
-               path: /list
+               path: /ping
                port: 8011
-             timeoutSeconds: 15
-             periodSeconds: 60
+             timeoutSeconds: 3
+             periodSeconds: 10
 
