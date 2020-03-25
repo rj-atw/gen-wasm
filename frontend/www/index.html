@@ -1,0 +1,129 @@
+<!doctype html>
+<html>
+  <head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type"/>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">`
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+   
+
+     <!-- Load React. -->
+     <!-- Note: when deploying, replace "development.js" with "production.min.js". -->
+     <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+     <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+
+
+
+    <!-- Note the usage of `type=module` here as this is an ES6 module -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <script type="module">
+     
+      //const axios = require('axios') 	    
+      function call_backend() {
+        const program = document.getElementById('program_name').value
+	const content = document.getElementById('code').value
+	axios.post('http://34.102.155.9/compile', {
+	  program: program,
+	  content: content
+        }).then(response => {
+	  console.log("program " + program + ":\t", response)
+          document.getElementById('response').value = response.data
+	  setTimeout(doc, 2000) 
+        })
+      }
+      
+      function doc() {
+	axios.get('http://34.102.155.9/list').then(response => {
+	  console.log("doc", response)
+	  $("#documentation").html(
+	  response.data.map(programDoc => 
+	    "<div class='card row bg-light'><div class='card-body'>"+
+	    "<h5 class='card-header'>"+programDoc.name+"</h5>"+
+	    "<p class='card-text'>"+programDoc.readme+"</p>"+
+	    "</div></div>"
+	  ))
+	})
+      }
+      // Use ES module import syntax to import functionality from the module
+      // that we have compiled.
+      //
+      // Note that the `default` import is an initialization function which
+      // will "boot" the module and make it ready to use. Currently browsers
+      // don't support natively imported WebAssembly as an ES module, but
+      // eventually the manual initialization won't be required!
+      import init,{ reduce } from './hello_world.js';
+
+      async function run(id) {
+          
+          window.a= document.getElementById('atext').value.split(',')
+
+	  id = (id.endsWith('.wasm')) ? id : id + '.wasm'
+
+          // First up we need to actually load the wasm file, so we use the
+          // default export to inform it where the wasm file is located on the
+          // server, and then we wait on the returned promise to wait for the
+          // wasm to be loaded.
+          // It may look like this: `await init('./pkg/without_a_bundler_bg.wasm');`,
+          // but there is also a handy default inside `init` function, which uses
+          // `import.meta` to locate the wasm file relatively to js file
+          //
+          // Note that instead of a string here you can also pass in an instance
+          // of `WebAssembly.Module` which allows you to compile your own module.
+          // Also note that the promise, when resolved, yields the wasm module's
+          // exports which is the same as importing the `*_bg` module in other
+          // modes
+          let rv = await init(id);
+  
+          // And afterwards we can use all the functionality defined in wasm.
+          const result = reduce(rv, window.a);
+          console.log(id + " " + `${result}`);
+
+          document.getElementById('response').value = id + " " + result
+        }
+
+	window.run = run;
+	window.call_backend = call_backend
+	window.doc = doc
+
+	doc()
+    </script>
+  </head>
+
+  <body>
+    <div class="container-fluid">
+      <div class="row"> 
+        <div id="documentation" class="col-3"></div>
+        <div class="col" id="graph"> </div>
+        <div class="col" style="align-content:right">
+	  <div class="row">
+            <label htmlFor="text">Program Name:</label>
+            <input type="text" id="program_name"/>
+	  </div>
+	  <div class="row">
+              <label htmlFor="code">Code:<label/>
+	  </div>    
+	  <div class="row">
+              <textarea id="code" class="col" style="height:500px"></textarea>
+	  </div>    
+	  <div class="row">           
+              <button onclick="call_backend()">submit</button>
+	  </div>
+        </div>
+        <div class="col-1"></div>
+       </div>
+       </div>
+    </div>
+
+    <!-- Load our React component. -->
+    <script type="module" src="cardList.js"></script>
+  </body>
+</html>
+
+
