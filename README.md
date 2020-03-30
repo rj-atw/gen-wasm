@@ -1,7 +1,7 @@
 # Idea
 
 Simplify the problems of data engineering by making first class the contituent logic transformation that 
-comprise the fundemental complexity of organizations. This toolkit seeks leverage [Wasm|wasm.org] to define
+comprise the fundemental complexity of organizations. This toolkit seeks leverage [Wasm](https://webassembly.org/) to define
 these first class transforms (need name: inni). 
 
 The toolkit will seek to reduce the complexity of creating an inni, in the hopes that more natural
@@ -26,7 +26,7 @@ in both a react.js app and a rust cli application.
 
 ## Frontend Prototype
 
-The react.js application is broken into a [frontend|https://github.com/rj-atw/gen-wasm/tree/master/frontend] and [backend|https://github.com/rj-atw/gen-wasm/tree/master/backend] directories. The frontend code
+The react.js application is broken into a [frontend](https://github.com/rj-atw/gen-wasm/tree/master/frontend) and [backend](https://github.com/rj-atw/gen-wasm/tree/master/backend) directories. The frontend code
 is a SPA (single page application) based UI which can be used to both defined a new rust based inni, see
 a list of already defined inni's and execute inni's against any input array. The backend directory contains
 an nodejs based API which list, dispatches, or compiles and uploads inni's used by the UI. The code is 
