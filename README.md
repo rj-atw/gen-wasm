@@ -1,16 +1,16 @@
 # Idea
 
-Junior is a toolkit & platform to reinvent how business design and support the technology underlying it.
+Junior is call to reinvent how businesses design and adapte the technology underlying them.
 
 The foundational idea is to extract business logic from the underlying plumping of software architecture. Unlocking greater flexibility for the ownership and understanding of unmodified business logic.
 
-The key word is unmodified; junior technologies uses [WASM](https://webassembly.org/) to unlock this capability.
+The key word is unmodified: junior technologies uses [WASM](https://webassembly.org/) to unlock this capability.
 
-So stewards of business logic (_Scouts_) will write simple functions that junior aids in compiling into WASM files (_badges_). 
+So stewards of business logic (_Scouts_) will write simple functions that Junior aids in compiling into WASM files (_badges_). 
 
 These badges can be run standalone using our platform, or more likely will be integrated into existing technology stack used in the scouts organization. Junior provides a varied toolkit that will aid in this integration. 
 
-The toolkit targets common integeration cases (_councilor_):
+The toolkit targets common integeration cases (_councilor_s):
   * General Java application (https://github.com/rj-atw/wasm-closure/tree/master/jni-app)  
   * Spark using the JNI councilor  (https://github.com/rj-atw/spark)
   * ... 
