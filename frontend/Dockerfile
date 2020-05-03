@@ -9,3 +9,5 @@ RUN npx babel src --out-dir www --presets react-app/prod
 
 FROM nginx
 COPY --from=babel /tmp/build/www/ /usr/share/nginx/html
+RUN sed -i 's/var\/log/tmp/g' /etc/nginx/nginx.conf
+RUN mkdir -p /tmp/nginx

@@ -1,18 +1,10 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: serving.knative.dev/v1
+kind: Service
 metadata:
-  name: {{.Chart.Name}}-deployment
-  labels:
-    app: {{.Chart.Name}}-deployment
+  name: wasm-troop
+  namespace: default
 spec:
-   replicas: 1
-   selector:
-     matchLabels:
-       app: {{.Chart.Name}}-deployment
-   template:
-     metadata:
-       labels:
-         app: {{.Chart.Name}}-deployment
+  template:
      spec:
        containers:
          - name: compiler
@@ -23,13 +15,12 @@ spec:
            readinessProbe:
              httpGet:
                path: /ping
-               port: 8011
              timeoutSeconds: 3 
              periodSeconds: 10
+             failureThreshold: 3
            livenessProbe:
              httpGet:
                path: /ping
-               port: 8011
              timeoutSeconds: 3
              periodSeconds: 10
-
+             failureThreshold: 3
