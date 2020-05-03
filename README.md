@@ -1,44 +1,57 @@
 # Idea
 
-Simplify the problems of data engineering by making first class the constituent logic transformation that 
-comprise the fundemental complexity of organizations. This toolkit seeks to leverage [Wasm](https://webassembly.org/) to define
-these first class transforms (to be name, current dub'ed _inni_ for lack of proper name). 
+Junior is a toolkit & platform to reinvent how business design and support the technology underlying it.
 
-The toolkit will seek to reduce the complexity of creating an inni, in the hopes that more natural
-units of business can define them. It also seeks to create the framework structures that will naturally
-extend inni's allowing them to scale to peta-byte data systems like Spark or Big Query does today.
-Whilst also keeping inni fuctional for websites or other small scale interfaces like Restful microservices,
-React.js apps or GraphQL based services.
+The foundational idea is to extract business logic from the underlying plumping of software architecture. Unlocking greater flexibility for the ownership and understanding of unmodified business logic.
 
-## The concept of an inni 
+The key word is unmodified; junior technologies uses [WASM](https://webassembly.org/) to unlock this capability.
 
-1. Basic Map/Reduce transform
-1. ETL transforms
-1. Finite State Machines
-2. ...
+So stewards of business logic (_Scouts_) will write simple functions that junior aids in compiling into WASM files (_badges_). 
 
-# Code Structure
+These badges can be run standalone using our platform, or more likely will be integrated into existing technology stack used in the scouts organization. Junior provides a varied toolkit that will aid in this integration. 
 
-The initial prototype code is broken down into two main pieces that represent how a simple inni, defined
-as a transformation taking an array of numbers to a single value. Can be defined once and yet work seamlessly
-in both a react.js app and a rust cli application. 
+The toolkit targets common integeration cases (_councilor_):
+  * General Java application (https://github.com/rj-atw/wasm-closure/tree/master/jni-app)  
+  * Spark using the JNI councilor  (https://github.com/rj-atw/spark)
+  * ... 
+
+## Breakdown of a Badge
+
+## Example of Badges
+
+### Rust
+
+#### variance.wasm
+```rust
+use wasm_bindgen::prelude::*;
+
+#[wasm_bindgen]
+pub fn readme() -> String { 
+  return String::from("Calculates the variance")
+}
+
+#[wasm_bindgen]
+pub fn reduce(a: &[u32]) -> u32 { 
+  let mean = a.iter().fold(0, |acc, x| acc+x) / (a.len() as u32);  
+  
+  a.iter().fold(0, |acc, x| acc + (x - mean).pow(2)) / (a.len() as u32)
+}
+
+```
+
+
 
 
 ## Frontend Prototype
 
 The react.js application is broken into [frontend](https://github.com/rj-atw/gen-wasm/tree/master/frontend) and [backend](https://github.com/rj-atw/gen-wasm/tree/master/backend) directories. The frontend code
-is a SPA (single page application) based UI which can be used to both define a new rust based inni; see
-a list of already defined inni's; and execute inni's against any input array. The backend directory contains
-a nodejs based API which list, dispatches, or compiles and uploads inni's used by the UI. The code is 
-deployed to a GKE cluster powering the website rjjr.tech.
+is a SPA (single page application) based UI which can be used to both define a new rust based badge; see
+a list of already defined badges; and execute badges against an inputed array. The backend directory contains
+a nodejs based API which list, dispatches, or compiles and uploads badges used by the UI. The code is 
+deployed to a GKE cluster powering the website http://court-of-honor.default.knative.junior.works/.
 
 
 ## Backend Prototype
 The cli application is currently hosted in https://github.com/rj-atw/wasm-closure. Just clone and compile the
 rust application using ```cargo build```. Then run it by providing the path to an WASM file defining a prototype 
 inni as the first argument then a comma seperated array of numbers for the input to the given inni.
-
-
-## Structure of the Prototype Inni definition
-
-to be added...
